@@ -1,14 +1,27 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import classes from "./MealItemForm.module.css";
 import Input from "../../UI/Input/Input";
 
-function MealItemForm({ id, onAddToCart}) {
+function MealItemForm({ id, onAddToCart }) {
+  const [amountIsValid, setAmountIsValid] = useState(true);
   const mealItemRef = useRef();
 
   function mealItemFormSubmitHandler(event) {
     event.preventDefault();
-    const amountToAdd = +mealItemRef.current.value;
-    onAddToCart(amountToAdd);
+
+    const mealItemValueInString = mealItemRef.current.value;
+    const mealItemValueInNumber = +mealItemValueInString;
+
+    if (
+      mealItemValueInString.trim().length === 0 ||
+      mealItemValueInNumber < 1 ||
+      mealItemValueInNumber > 100
+    ) {
+      setAmountIsValid(false);
+      return;
+    }
+
+    onAddToCart(mealItemValueInNumber);
     // Reset the form's item value to 1 by default
     mealItemRef.current.value = "1";
   }
@@ -28,6 +41,7 @@ function MealItemForm({ id, onAddToCart}) {
         }}
       />
       <button type="submit">+ Add</button>
+      {!amountIsValid && <p>Please enter a valid amount (more than 0 and less than 101)</p>}
     </form>
   );
 }

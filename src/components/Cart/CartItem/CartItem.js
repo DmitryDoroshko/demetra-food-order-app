@@ -7,6 +7,14 @@ const CartItem = ({id, price, name, amount, description}) => {
 
   const priceNormalized = `$${price.toFixed(2)}`;
 
+  const itemToAdd = {
+    id,
+    price,
+    name,
+    amount,
+    description
+  };
+
   return (
     <li className={classes['cart-item']}>
       <div>
@@ -18,13 +26,7 @@ const CartItem = ({id, price, name, amount, description}) => {
       </div>
       <div className={classes.actions}>
         <button onClick={() => cartContext.removeItem(id)}>−</button>
-        <button onClick={() => cartContext.addItem({
-          id,
-          price,
-          name,
-          amount,
-          description
-        })}>+</button>
+        <button onClick={() => cartContext.addItem(itemToAdd)}>+</button>
       </div>
     </li>
   );

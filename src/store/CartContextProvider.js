@@ -12,11 +12,8 @@ const initialCartState = {
 };
 
 const cartReducer = (state = initialCartState, action) => {
+  // Add Item To Cart
   if (action.type === ACTIONS.ADD_ITEM_TO_CART) {
-    debugger;
-    const updatedTotalPriceForItems =
-      state.totalPriceForItems +
-      action.payload.item.price * action.payload.item.amount;
     const existingCartItemIndex = state.cartItems.findIndex((item) => {
       return item.id === action.payload.item.id;
     });
@@ -34,11 +31,18 @@ const cartReducer = (state = initialCartState, action) => {
     } else {
       updatedItems = state.cartItems.concat(action.payload.item);
     }
+
+    const updatedTotalPriceForItems =
+      state.totalPriceForItems +
+      action.payload.item.price * action.payload.item.amount;
+
     return {
       cartItems: updatedItems,
       totalPriceForItems: updatedTotalPriceForItems,
     };
   }
+
+  // Remove Item From Cart
   if (action.type === ACTIONS.REMOVE_ITEM_FROM_CART) {
     const existingCartItemIndex = state.cartItems.findIndex((item) => {
       return item.id === action.payload.id;
@@ -49,7 +53,8 @@ const cartReducer = (state = initialCartState, action) => {
     if (!existingItem) {
       return;
     }
-    const updatedTotalPriceForItems = state.totalPriceForItems - existingItem.price;
+    const updatedTotalPriceForItems =
+      state.totalPriceForItems - existingItem.price;
     let updatedItems;
 
     if (existingItem.amount === 1) {
@@ -67,6 +72,8 @@ const cartReducer = (state = initialCartState, action) => {
       totalPriceForItems: updatedTotalPriceForItems,
     };
   }
+
+  // By default return current state snapshot
   return state;
 };
 

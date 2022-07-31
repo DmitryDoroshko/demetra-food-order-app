@@ -6,7 +6,6 @@ import CartContext from "../../../store/cart-context";
 
 function Cart({ onClose }) {
   const cartContext = useContext(CartContext);
-
   const cartItems = (
     <ul className={classes["cart-items"]}>
       {cartContext.cartItems.map((item) => (

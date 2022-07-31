@@ -1,9 +1,8 @@
 import Header from "./components/Layout/Header/Header";
-import {useContext, useState} from "react";
+import {useState} from "react";
 import Meals from "./components/Meals/Meals/Meals";
 import Cart from "./components/Cart/Cart/Cart";
-import CartContext from "./store/cart-context";
-import {CartContextProvider} from "./store/CartProvider";
+import {CartContextProvider} from "./store/CartContextProvider";
 
 function App() {
   const [cartShouldBeShown, setCartShouldBeShown] = useState(false);

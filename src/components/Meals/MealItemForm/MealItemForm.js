@@ -1,22 +1,16 @@
-import React, {useContext, useRef} from "react";
+import React, { useRef } from "react";
 import classes from "./MealItemForm.module.css";
 import Input from "../../UI/Input/Input";
-import CartContext from "../../../store/cart-context";
 
-function MealItemForm({id, name, price}) {
-  const cartContext = useContext(CartContext);
-
+function MealItemForm({ id, onAddToCart}) {
   const mealItemRef = useRef();
 
   function mealItemFormSubmitHandler(event) {
     event.preventDefault();
-
-    const itemToAddToCart = {
-      id: id,
-      name: name,
-      amount: +mealItemRef.current.value,
-      price: price,
-    };
+    const amountToAdd = +mealItemRef.current.value;
+    onAddToCart(amountToAdd);
+    // Reset the form's item value to 1 by default
+    mealItemRef.current.value = "1";
   }
 
   return (

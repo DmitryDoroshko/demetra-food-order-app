@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./CheckoutForm.module.css";
 
-function CheckoutForm(props) {
+function CheckoutForm() {
   const submitCheckoutFormHandler = (event) => {
     event.preventDefault();
     console.log("Submitted");
@@ -10,19 +10,19 @@ function CheckoutForm(props) {
   return (
     <div className={classes.wrapper}>
       <form className={classes.form} onSubmit={submitCheckoutFormHandler}>
-        <label htmlFor="fname">First Name</label>
+        <label htmlFor="firstname">First Name</label>
         <input
           type="text"
-          id="fname"
+          id="firstname"
           name="firstname"
           placeholder="Your name..."
           className={classes.input}
         />
 
-        <label htmlFor="lname">Last Name</label>
+        <label htmlFor="lastname">Last Name</label>
         <input
           type="text"
-          id="lname"
+          id="lastname"
           name="lastname"
           placeholder="Your last name..."
           className={classes.input}
@@ -54,8 +54,17 @@ function CheckoutForm(props) {
           placeholder="Your postal code..."
         />
 
+        <label htmlFor="street">Street</label>
+        <input
+          type="text"
+          id="street"
+          name="street"
+          className={classes.input}
+          placeholder="Your street, house, apartment..."
+        />
+
         <div className={classes.actions}>
-          <button type="button" className={classes.button}>
+          <button type="button" className={classes["button--cancel"]}>
             Cancel
           </button>
           <button type="submit" className={classes.button}>

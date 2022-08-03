@@ -25,7 +25,6 @@ function AvailableMeals() {
       setMealsFromServer(mealsTransformed);
     };
     fetchMealsFromServer();
-    console.log({mealsFromServer})
   }, []);
 
   const mealsList = mealsFromServer.map((meal) => (

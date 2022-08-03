@@ -3,6 +3,7 @@ import classes from "./Cart.module.css";
 import Modal from "../../UI/Modal/Modal";
 import CartItem from "../CartItem/CartItem";
 import CartContext from "../../../store/cart-context";
+import CheckoutForm from "../../CheckoutForm/CheckoutForm";
 
 function Cart({ onClose }) {
   const cartContext = useContext(CartContext);
@@ -34,6 +35,7 @@ function Cart({ onClose }) {
         <span>Total Price</span>
         <span>{`$${totalPrice}`}</span>
       </div>
+      <CheckoutForm/>
       <div className={classes.actions}>
         <button className={classes["button--alt"]} onClick={onClose}>
           Close

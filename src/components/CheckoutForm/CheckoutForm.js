@@ -64,7 +64,7 @@ function CheckoutForm() {
         />
 
         <div className={classes.actions}>
-          <button type="button" className={classes.button}>
+          <button type="button" className={classes["button--cancel"]}>
             Cancel
           </button>
           <button type="submit" className={classes.button}>

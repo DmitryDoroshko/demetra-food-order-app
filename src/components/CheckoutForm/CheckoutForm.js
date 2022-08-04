@@ -16,7 +16,7 @@ const isPostalCodeValid = (postal) => {
   return false;
 };
 
-function CheckoutForm() {
+function CheckoutForm({onCancel}) {
   const {
     enteredValue: enteredFirstName,
     isInputValid: isEnteredFirstNameInputValid,
@@ -228,7 +228,11 @@ function CheckoutForm() {
           )}
         </div>
         <div className={classes.actions}>
-          <button type="button" className={classes["button--cancel"]}>
+          <button
+            type="button"
+            className={classes["button--cancel"]}
+            onClick={onCancel}
+          >
             Cancel
           </button>
           <button

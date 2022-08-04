@@ -62,3 +62,21 @@
   display: flex;
   gap: 2rem;
 }
+
+.button.disabled {
+  cursor: not-allowed;
+  background-color: rgba(76, 175, 80, 0.5);
+}
+
+.invalid {
+
+}
+
+.textError {
+  color: red;
+}
+
+.controls {
+
+}
+

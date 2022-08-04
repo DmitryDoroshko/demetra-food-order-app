@@ -30,6 +30,10 @@
   background-color: darkorange;
 }
 
+.button:disabled {
+  cursor: not-allowed;
+}
+
 .button--cancel:hover {
   background-color: orangered;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -62,3 +66,21 @@
   display: flex;
   gap: 2rem;
 }
+
+.button.disabled {
+  cursor: not-allowed;
+  background-color: rgba(76, 175, 80, 0.5);
+}
+
+.invalid {
+
+}
+
+.textError {
+  color: red;
+}
+
+.controls {
+
+}
+

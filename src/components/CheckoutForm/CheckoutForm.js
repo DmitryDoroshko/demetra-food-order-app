@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./CheckoutForm.module.css";
 import useInput from "../../hooks/use-input";
+import { FIREBASE_API_URL_ORDERS } from "../../utils/constants";
 
 const isTextValid = (text) => {
   return text.trim().length > 0;
@@ -16,7 +17,9 @@ const isPostalCodeValid = (postal) => {
   return false;
 };
 
-function CheckoutForm({onCancel}) {
+function CheckoutForm({ onCancel, mealsToBeOrderedData }) {
+  const [successOrdering, setSuccessOrdering] = useState(false);
+
   const {
     enteredValue: enteredFirstName,
     isInputValid: isEnteredFirstNameInputValid,
@@ -71,16 +74,36 @@ function CheckoutForm({onCancel}) {
     inputBlurHandler: enteredStreetInputBlurHandler,
   } = useInput(isTextValid);
 
-  const submitCheckoutFormHandler = (event) => {
+  const submitCheckoutFormHandler = async (event) => {
     event.preventDefault();
-    console.log({
-      enteredFirstName,
-      enteredLastName,
-      enteredCountry,
-      enteredCity,
-      enteredPostalCode,
-      enteredStreet,
+
+    if (!isFormValid) {
+      return;
+    }
+
+    const checkoutFormData = {
+      name: `${enteredFirstName} ${enteredLastName}`,
+      country: enteredCountry,
+      city: enteredCity,
+      postalCode: enteredPostalCode,
+      street: enteredStreet,
+      meals: { ...mealsToBeOrderedData },
+    };
+
+    const response = await fetch(FIREBASE_API_URL_ORDERS, {
+      body: JSON.stringify(checkoutFormData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST"
     });
+
+    if (!response.ok) {
+      throw new Error("Something went wrong sending your data...");
+    }
+
+    setSuccessOrdering(true);
+
     resetEnteredFirstName();
     resetEnteredLastName();
     resetEnteredCountry();
@@ -126,6 +149,20 @@ function CheckoutForm({onCancel}) {
     !isEnteredStreetInputValid && classes.invalid
   }`;
 
+  if (successOrdering) {
+    return (
+      <div className={classes.actions}>
+        <p>Successfully ordered!</p>
+        <button
+          type="button"
+          className={classes["button--cancel"]}
+          onClick={onCancel}
+        >
+          Cancel
+        </button>
+      </div>
+    );
+  }
   return (
     <div className={classes.wrapper}>
       <form className={classes.form} onSubmit={submitCheckoutFormHandler}>

@@ -47,7 +47,12 @@ function Cart({ onClose }) {
         <span>Total Price</span>
         <span>{`$${totalPrice}`}</span>
       </div>
-      {showCheckoutForm && <CheckoutForm onCancel={cancelCheckoutFormHandler}/>}
+      {showCheckoutForm && (
+        <CheckoutForm
+          onCancel={cancelCheckoutFormHandler}
+          mealsToBeOrderedData={cartContext.cartItems}
+        />
+      )}
       {showOrderButtons && (
         <div className={classes.actions}>
           <button className={classes["button--alt"]} onClick={onClose}>

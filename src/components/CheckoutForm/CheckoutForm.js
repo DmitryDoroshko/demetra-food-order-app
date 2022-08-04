@@ -6,6 +6,16 @@ const isTextValid = (text) => {
   return text.trim().length > 0;
 };
 
+const isPostalCodeValid = (postal) => {
+  if (typeof postal === "number") {
+    return postal.toString().trim().length === 5;
+  }
+  if (typeof postal === "string") {
+    return postal.trim().length === 5;
+  }
+  return false;
+};
+
 function CheckoutForm() {
   const {
     enteredValue: enteredFirstName,
@@ -25,15 +35,70 @@ function CheckoutForm() {
     inputBlurHandler: enteredLastNameInputBlurHandler,
   } = useInput(isTextValid);
 
+  const {
+    enteredValue: enteredCountry,
+    isInputValid: isEnteredCountryInputValid,
+    hasError: enteredCountryHasError,
+    valueChangeHandler: enteredCountryChangeHandler,
+    reset: resetEnteredCountry,
+    inputBlurHandler: enteredCountryInputBlurHandler,
+  } = useInput(isTextValid);
+
+  const {
+    enteredValue: enteredCity,
+    isInputValid: isEnteredCityInputValid,
+    hasError: enteredCityHasError,
+    valueChangeHandler: enteredCityChangeHandler,
+    reset: resetEnteredCity,
+    inputBlurHandler: enteredCityInputBlurHandler,
+  } = useInput(isTextValid);
+
+  const {
+    enteredValue: enteredPostalCode,
+    isInputValid: isEnteredPostalCodeInputValid,
+    hasError: enteredPostalCodeHasError,
+    valueChangeHandler: enteredPostalCodeChangeHandler,
+    reset: resetEnteredPostalCode,
+    inputBlurHandler: enteredPostalCodeInputBlurHandler,
+  } = useInput(isPostalCodeValid);
+
+  const {
+    enteredValue: enteredStreet,
+    isInputValid: isEnteredStreetInputValid,
+    hasError: enteredStreetHasError,
+    valueChangeHandler: enteredStreetChangeHandler,
+    reset: resetEnteredStreet,
+    inputBlurHandler: enteredStreetInputBlurHandler,
+  } = useInput(isTextValid);
+
   const submitCheckoutFormHandler = (event) => {
     event.preventDefault();
+    console.log({
+      enteredFirstName,
+      enteredLastName,
+      enteredCountry,
+      enteredCity,
+      enteredPostalCode,
+      enteredStreet,
+    });
     resetEnteredFirstName();
     resetEnteredLastName();
+    resetEnteredCountry();
+    resetEnteredCity();
+    resetEnteredPostalCode();
+    resetEnteredStreet();
   };
 
   let isFormValid = true;
 
-  if (!isEnteredFirstNameInputValid && !isEnteredLastNameInputValid) {
+  if (
+    !isEnteredFirstNameInputValid ||
+    !isEnteredLastNameInputValid ||
+    !isEnteredCountryInputValid ||
+    !isEnteredCityInputValid ||
+    !isEnteredPostalCodeInputValid ||
+    !isEnteredStreetInputValid
+  ) {
     isFormValid = false;
   }
 
@@ -43,6 +108,22 @@ function CheckoutForm() {
 
   const classesForLastName = `${classes.controls} ${
     !isEnteredLastNameInputValid && classes.invalid
+  }`;
+
+  const classesForCountry = `${classes.controls} ${
+    !isEnteredCountryInputValid && classes.invalid
+  }`;
+
+  const classesForCity = `${classes.controls} ${
+    !isEnteredCityInputValid && classes.invalid
+  }`;
+
+  const classesForPostalCode = `${classes.controls} ${
+    !isEnteredPostalCodeInputValid && classes.invalid
+  }`;
+
+  const classesForStreet = `${classes.controls} ${
+    !isEnteredStreetInputValid && classes.invalid
   }`;
 
   return (
@@ -64,7 +145,6 @@ function CheckoutForm() {
             <p className={classes.textError}>Invalid first name...</p>
           )}
         </div>
-
         <div className={classesForLastName}>
           <label htmlFor="lastname">Last Name</label>
           <input
@@ -81,17 +161,22 @@ function CheckoutForm() {
             <p className={classes.textError}>Invalid last name...</p>
           )}
         </div>
-        <div className={classes.controls}>
+        <div className={classesForCountry}>
           <label htmlFor="country">Country</label>
-          <select id="country" name="country" className={classes.select}>
-            <option value="australia">Australia</option>
-            <option value="canada">Canada</option>
-            <option value="usa">USA</option>
-            <option value="ukraine">Ukraine</option>
-            <option value="poland">Poland</option>
-          </select>
+          <input
+            id="country"
+            name="country"
+            className={classes.select}
+            onChange={enteredCountryChangeHandler}
+            value={enteredCountry}
+            onBlur={enteredCountryInputBlurHandler}
+            placeholder="Your country..."
+          />
+          {enteredCountryHasError && (
+            <p className={classes.textError}>Invalid country...</p>
+          )}
         </div>
-        <div className={classes.controls}>
+        <div className={classesForCity}>
           <label htmlFor="city">City</label>
           <input
             type="text"
@@ -99,9 +184,16 @@ function CheckoutForm() {
             name="city"
             className={classes.input}
             placeholder="Your city..."
+            value={enteredCity}
+            onChange={enteredCityChangeHandler}
+            onBlur={enteredCityInputBlurHandler}
           />
+          {enteredCityHasError && (
+            <p className={classes.textError}>Invalid city...</p>
+          )}
         </div>
-        <div className={classes.controls}>
+
+        <div className={classesForPostalCode}>
           <label htmlFor="postal-code">Postal code</label>
           <input
             type="number"
@@ -109,9 +201,17 @@ function CheckoutForm() {
             name="postal-code"
             className={classes.input}
             placeholder="Your postal code..."
+            value={enteredPostalCode}
+            onChange={enteredPostalCodeChangeHandler}
+            onBlur={enteredPostalCodeInputBlurHandler}
           />
+          {enteredPostalCodeHasError && (
+            <p className={classes.textError}>
+              Invalid postal code (must be 5 digits long)...
+            </p>
+          )}
         </div>
-        <div className={classes.controls}>
+        <div className={classesForStreet}>
           <label htmlFor="street">Street</label>
           <input
             type="text"
@@ -119,7 +219,13 @@ function CheckoutForm() {
             name="street"
             className={classes.input}
             placeholder="Your street, house, apartment..."
+            onChange={enteredStreetChangeHandler}
+            value={enteredStreet}
+            onBlur={enteredStreetInputBlurHandler}
           />
+          {enteredStreetHasError && (
+            <p className={classes.textError}>Invalid street...</p>
+          )}
         </div>
         <div className={classes.actions}>
           <button type="button" className={classes["button--cancel"]}>
@@ -128,7 +234,7 @@ function CheckoutForm() {
           <button
             type="submit"
             className={classes.button}
-            disabled={isFormValid}
+            disabled={!isFormValid}
           >
             Complete checkout
           </button>
